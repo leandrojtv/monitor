@@ -7,5 +7,5 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 38080
 CMD ["sh", "-c", "npm run migrate && npm start"]

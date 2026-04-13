@@ -16,7 +16,7 @@ Aplicação de monitoramento de banco de dados com backend Node.js/PostgreSQL e 
 docker compose up --build
 ```
 
-- Backend: `http://localhost:3000`
+- Backend: `http://localhost:38080`
 - Frontend: `http://localhost:5173`
 
 ## Rotas backend

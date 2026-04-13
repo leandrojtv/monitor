@@ -82,7 +82,7 @@ Esse comando sobe:
 Após os containers iniciarem:
 
 - Frontend: http://localhost:5173
-- Backend (health): http://localhost:3000/health
+- Backend (health): http://localhost:38080/health
 
 ---
 
@@ -156,14 +156,14 @@ docker compose up --build
 
 ## 10) Solução de problemas
 
-### Porta 3000, 5173 ou 5432 já em uso
+### Porta 38080, 5173 ou 35432 já em uso
 
 - Pare processos locais que usem essas portas, ou
 - Ajuste o mapeamento de portas no `docker-compose.yml`.
 
 ### Frontend não conecta no backend
 
-- Confira se o backend está saudável: `http://localhost:3000/health`
+- Confira se o backend está saudável: `http://localhost:38080/health`
 - Verifique logs: `docker compose logs -f backend`
 
 ### Erro de build por cache antigo
