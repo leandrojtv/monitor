@@ -8,8 +8,9 @@ function dayMatches(days) {
   return days.includes(normalized);
 }
 
-function hourMatches(hour) {
-  return new Date().getHours() === hour;
+function timeMatches(hour, minute) {
+  const now = new Date();
+  return now.getHours() === hour && now.getMinutes() === minute;
 }
 
 function intervalMatches(lastCollectionAt, intervalDays) {
@@ -34,7 +35,7 @@ async function collectAndStoreMetrics() {
 
     if (
       !dayMatches(config.cron_days_of_week) ||
-      !hourMatches(config.cron_hour) ||
+      !timeMatches(config.cron_hour, config.cron_minute || 0) ||
       !intervalMatches(config.last_collection_at, config.cron_interval_days)
     ) {
       await client.query('ROLLBACK');
@@ -83,7 +84,7 @@ async function collectAndStoreMetrics() {
 }
 
 function startScheduler() {
-  cron.schedule('0 * * * *', async () => {
+  cron.schedule('* * * * *', async () => {
     try {
       const result = await collectAndStoreMetrics();
       if (result.skipped) {
@@ -96,7 +97,7 @@ function startScheduler() {
     }
   });
 
-  console.log('Scheduler iniciado. Verificação executa a cada hora cheia.');
+  console.log('Scheduler iniciado. Verificação executa a cada minuto.');
 }
 
 module.exports = { startScheduler, collectAndStoreMetrics };

@@ -21,6 +21,7 @@ router.post('/', async (req, res, next) => {
       cron_interval_days,
       cron_days_of_week,
       cron_hour,
+      cron_minute,
       dashboard_refresh_rate_seconds,
     } = req.body;
 
@@ -32,7 +33,8 @@ router.post('/', async (req, res, next) => {
            cron_interval_days = COALESCE($4, cron_interval_days),
            cron_days_of_week = COALESCE($5, cron_days_of_week),
            cron_hour = COALESCE($6, cron_hour),
-           dashboard_refresh_rate_seconds = COALESCE($7, dashboard_refresh_rate_seconds),
+           cron_minute = COALESCE($7, cron_minute),
+           dashboard_refresh_rate_seconds = COALESCE($8, dashboard_refresh_rate_seconds),
            updated_at = NOW()
        WHERE id = 1
        RETURNING *`,
@@ -43,6 +45,7 @@ router.post('/', async (req, res, next) => {
         cron_interval_days,
         cron_days_of_week,
         cron_hour,
+        cron_minute,
         dashboard_refresh_rate_seconds,
       ]
     );

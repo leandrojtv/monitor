@@ -6,11 +6,15 @@ CREATE TABLE IF NOT EXISTS app_config (
   cron_interval_days INTEGER NOT NULL DEFAULT 1,
   cron_days_of_week TEXT[] NOT NULL DEFAULT ARRAY['1','2','3','4','5'],
   cron_hour SMALLINT NOT NULL DEFAULT 2,
+  cron_minute SMALLINT NOT NULL DEFAULT 0,
   dashboard_refresh_rate_seconds INTEGER NOT NULL DEFAULT 60,
   last_collection_at TIMESTAMPTZ,
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   CONSTRAINT app_config_singleton CHECK (id = 1)
 );
+
+ALTER TABLE app_config
+  ADD COLUMN IF NOT EXISTS cron_minute SMALLINT NOT NULL DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS disk_space_metrics (
   id BIGSERIAL PRIMARY KEY,
@@ -50,6 +54,7 @@ INSERT INTO app_config (
   cron_interval_days,
   cron_days_of_week,
   cron_hour,
+  cron_minute,
   dashboard_refresh_rate_seconds
 )
 VALUES (
@@ -60,6 +65,7 @@ VALUES (
   1,
   ARRAY['1','2','3','4','5'],
   2,
+  0,
   60
 )
 ON CONFLICT (id) DO NOTHING;
