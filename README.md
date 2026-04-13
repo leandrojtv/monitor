@@ -35,3 +35,7 @@ docker compose up --build
 - Sidebar responsiva com navegação principal.
 - Tema dark moderno com glassmorphism sutil e bordas arredondadas.
 - Axios configurado para consumir backend via `VITE_API_URL`.
+
+
+## Guia Docker completo
+- Consulte `REDMED.md` para passo a passo completo (clone via Git + subida com Docker).
