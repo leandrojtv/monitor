@@ -65,9 +65,17 @@ async function collectAndStoreMetrics() {
 
     for (const query of data.highCpuQueries) {
       await client.query(
-        `INSERT INTO high_cpu_queries (query_hash, query_text, cpu_seconds, skew_percent)
-         VALUES ($1, $2, $3, $4)`,
-        [query.query_hash, query.query_text, query.cpu_seconds, query.skew_percent]
+        `INSERT INTO high_cpu_queries (query_hash, query_text, user_name, table_name, cpu_seconds, amp_cpu_time, skew_percent)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [
+          query.query_hash,
+          query.query_text,
+          query.user_name,
+          query.table_name,
+          query.cpu_seconds,
+          query.amp_cpu_time,
+          query.skew_percent,
+        ]
       );
     }
 

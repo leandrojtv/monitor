@@ -41,10 +41,20 @@ CREATE TABLE IF NOT EXISTS high_cpu_queries (
   id BIGSERIAL PRIMARY KEY,
   query_hash TEXT NOT NULL,
   query_text TEXT NOT NULL,
+  user_name TEXT NOT NULL DEFAULT 'unknown_user',
+  table_name TEXT NOT NULL DEFAULT 'unknown_table',
   cpu_seconds NUMERIC(12,2) NOT NULL,
+  amp_cpu_time NUMERIC(12,2) NOT NULL DEFAULT 0,
   skew_percent NUMERIC(5,2) NOT NULL,
   collected_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE high_cpu_queries
+  ADD COLUMN IF NOT EXISTS user_name TEXT NOT NULL DEFAULT 'unknown_user';
+ALTER TABLE high_cpu_queries
+  ADD COLUMN IF NOT EXISTS table_name TEXT NOT NULL DEFAULT 'unknown_table';
+ALTER TABLE high_cpu_queries
+  ADD COLUMN IF NOT EXISTS amp_cpu_time NUMERIC(12,2) NOT NULL DEFAULT 0;
 
 INSERT INTO app_config (
   id,

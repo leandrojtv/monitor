@@ -4,7 +4,7 @@ Aplicação de monitoramento de banco de dados com backend Node.js/PostgreSQL e 
 
 ## Stack
 - **Backend:** Node.js + Express + PostgreSQL + node-cron
-- **Frontend:** React (Vite) + Tailwind CSS + React Router + Axios + Lucide React
+- **Frontend:** React (Vite) + Tailwind CSS + React Router + Axios + Lucide React + Recharts
 - **Infra:** Docker + Docker Compose
 
 ## Estrutura
@@ -23,6 +23,7 @@ docker compose up --build
 - `GET /health`
 - `GET /api/config`
 - `POST /api/config`
+- `GET /api/metrics/dashboard`
 - `GET /api/metrics/disk-space?limit=100`
 - `GET /api/metrics/sessions?limit=100`
 - `GET /api/metrics/high-cpu-queries?limit=100`
