@@ -1,19 +1,25 @@
-# Monitor Backend (Node.js + PostgreSQL)
+# Monitor App (Backend + Frontend)
 
-Backend para monitoramento histórico de métricas de banco de dados.
+Aplicação de monitoramento de banco de dados com backend Node.js/PostgreSQL e frontend React/Vite.
 
 ## Stack
-- Node.js + Express
-- PostgreSQL
-- node-cron para agendamento
-- Docker + Docker Compose
+- **Backend:** Node.js + Express + PostgreSQL + node-cron
+- **Frontend:** React (Vite) + Tailwind CSS + React Router + Axios + Lucide React
+- **Infra:** Docker + Docker Compose
 
-## Executar com Docker
+## Estrutura
+- `src/` → backend
+- `frontend/` → frontend
+
+## Executar tudo com Docker
 ```bash
 docker compose up --build
 ```
 
-## Endpoints
+- Backend: `http://localhost:3000`
+- Frontend: `http://localhost:5173`
+
+## Rotas backend
 - `GET /health`
 - `GET /api/config`
 - `POST /api/config`
@@ -21,10 +27,10 @@ docker compose up --build
 - `GET /api/metrics/sessions?limit=100`
 - `GET /api/metrics/high-cpu-queries?limit=100`
 
-## Cron
-O scheduler roda em `0 * * * *` (hora cheia) e valida as regras da tabela `app_config`:
-- `cron_interval_days`
-- `cron_days_of_week`
-- `cron_hour`
-
-Quando as condições batem, ele executa uma coleta simulada via cliente Teradata e persiste as métricas no Postgres.
+## Frontend
+- Rotas:
+  - `/dashboard`
+  - `/configuracoes`
+- Sidebar responsiva com navegação principal.
+- Tema dark moderno com glassmorphism sutil e bordas arredondadas.
+- Axios configurado para consumir backend via `VITE_API_URL`.
