@@ -1,0 +1,21 @@
+{
+  "name": "monitor-backend",
+  "version": "1.0.0",
+  "description": "Backend de monitoramento de banco de dados com Node.js + PostgreSQL",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "migrate": "node src/migrations/runMigrations.js",
+    "check": "node --check src/index.js && node --check src/app.js && node --check src/services/scheduler.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-cron": "^3.0.3",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
