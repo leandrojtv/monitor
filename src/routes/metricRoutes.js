@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('../db/client');
+const { collectAndStoreMetrics } = require('../services/scheduler');
 
 const router = express.Router();
 
@@ -9,6 +10,15 @@ function capacityFactor(databaseName) {
   if (databaseName.includes('finance')) return 1.6;
   return 1.8;
 }
+
+router.post('/refresh', async (_req, res, next) => {
+  try {
+    await collectAndStoreMetrics({ force: true });
+    res.json({ message: 'Coleta executada com sucesso.' });
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get('/dashboard', async (_req, res, next) => {
   try {

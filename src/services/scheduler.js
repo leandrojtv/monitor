@@ -21,7 +21,7 @@ function intervalMatches(lastCollectionAt, intervalDays) {
   return diffDays >= intervalDays;
 }
 
-async function collectAndStoreMetrics() {
+async function collectAndStoreMetrics(options = {}) {
   const client = await db.getClient();
   try {
     await client.query('BEGIN');
@@ -34,9 +34,10 @@ async function collectAndStoreMetrics() {
     }
 
     if (
-      !dayMatches(config.cron_days_of_week) ||
-      !timeMatches(config.cron_hour, config.cron_minute || 0) ||
-      !intervalMatches(config.last_collection_at, config.cron_interval_days)
+      !options.force &&
+      (!dayMatches(config.cron_days_of_week) ||
+        !timeMatches(config.cron_hour, config.cron_minute || 0) ||
+        !intervalMatches(config.last_collection_at, config.cron_interval_days))
     ) {
       await client.query('ROLLBACK');
       return { skipped: true, reason: 'Fora da janela configurada.' };

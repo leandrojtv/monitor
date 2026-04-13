@@ -114,6 +114,7 @@ export default function SettingsPage() {
     event.preventDefault();
     try {
       await api.post('/config', payload);
+      await api.post('/metrics/refresh');
       setShowToast(true);
     } catch (error) {
       console.error('Erro ao salvar configurações:', error);

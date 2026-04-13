@@ -22,6 +22,7 @@ function formatDateTime(value) {
 export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [lastRefresh, setLastRefresh] = useState(null);
+  const [refreshSeconds, setRefreshSeconds] = useState(60);
   const [data, setData] = useState({
     kpis: {
       totalSpaceUsedGB: 0,
@@ -52,6 +53,27 @@ export default function DashboardPage() {
   useEffect(() => {
     loadDashboard();
   }, [loadDashboard]);
+
+  useEffect(() => {
+    api
+      .get('/config')
+      .then((res) => {
+        if (res.data?.dashboard_refresh_rate_seconds) {
+          setRefreshSeconds(Number(res.data.dashboard_refresh_rate_seconds));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!refreshSeconds) return undefined;
+
+    const interval = setInterval(() => {
+      loadDashboard();
+    }, refreshSeconds * 1000);
+
+    return () => clearInterval(interval);
+  }, [loadDashboard, refreshSeconds]);
 
   const kpis = [
     {
