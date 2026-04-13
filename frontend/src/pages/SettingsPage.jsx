@@ -36,6 +36,8 @@ export default function SettingsPage() {
   const [form, setForm] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [testConnectionMessage, setTestConnectionMessage] = useState('');
+  const [testConnectionStatus, setTestConnectionStatus] = useState('idle');
 
   useEffect(() => {
     api
@@ -86,6 +88,27 @@ export default function SettingsPage() {
       dashboard_refresh_rate_seconds: Number(form.dashboard_refresh_rate_seconds),
     };
   }, [form]);
+
+  async function handleTestConnection() {
+    setTestConnectionStatus('loading');
+    setTestConnectionMessage('Testando conexão...');
+
+    try {
+      const response = await api.post('/config/test-connection', {
+        jdbc_connection_string: form.jdbc_connection_string,
+        jdbc_user: form.jdbc_user,
+        jdbc_password: form.jdbc_password,
+      });
+
+      setTestConnectionStatus('success');
+      setTestConnectionMessage(response.data.message || 'Conexão com Teradata testada com sucesso.');
+    } catch (error) {
+      setTestConnectionStatus('error');
+      setTestConnectionMessage(
+        error?.response?.data?.message || 'Falha ao testar conexão com Teradata. Verifique os dados e tente novamente.'
+      );
+    }
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -153,6 +176,30 @@ export default function SettingsPage() {
               </button>
             </div>
           </label>
+
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={handleTestConnection}
+              className="rounded-xl border border-neon-blue/40 bg-neon-blue/15 px-4 py-2 text-sm font-medium text-neon-blue hover:bg-neon-blue/25"
+            >
+              Testar conexão com Teradata
+            </button>
+
+            {testConnectionStatus !== 'idle' && (
+              <p
+                className={`text-sm ${
+                  testConnectionStatus === 'success'
+                    ? 'text-emerald-300'
+                    : testConnectionStatus === 'error'
+                      ? 'text-rose-300'
+                      : 'text-slate-300'
+                }`}
+              >
+                {testConnectionMessage}
+              </p>
+            )}
+          </div>
         </article>
 
         <article className="glass-panel p-5 space-y-4">

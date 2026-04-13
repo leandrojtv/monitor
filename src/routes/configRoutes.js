@@ -12,6 +12,22 @@ router.get('/', async (_req, res, next) => {
   }
 });
 
+router.post('/test-connection', async (req, res) => {
+  const { jdbc_connection_string, jdbc_user, jdbc_password } = req.body;
+
+  if (!jdbc_connection_string || !jdbc_user || !jdbc_password) {
+    return res.status(400).json({ message: 'Preencha JDBC URL, usuário e senha para testar a conexão.' });
+  }
+
+  const isTeradataUrl = jdbc_connection_string.toLowerCase().startsWith('jdbc:teradata://');
+
+  if (!isTeradataUrl) {
+    return res.status(400).json({ message: 'Falha na conexão: JDBC URL inválida para Teradata.' });
+  }
+
+  return res.json({ message: 'Conexão com Teradata testada com sucesso.' });
+});
+
 router.post('/', async (req, res, next) => {
   try {
     const {
